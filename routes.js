@@ -21,23 +21,23 @@ function mountAction( app, controllerName, actionName, controller ){
 
   actionName = actionName.match( /(get|post|put|delete|patch)(.*)/ );
   method = actionName[1];
-  urlPath = actionName[2];
+  urlPath = '/' + controllerName +'/'+ actionName[2].toLowerCase();
 
   switch( method ){
     case 'get':
       app.get( urlPath, genHandler(fn, 'query' ) );
       break;
     case 'post':
-      app.get( urlPath, genHandler(fn, 'body' ) );
+      app.post( urlPath, genHandler(fn, 'body' ) );
       break;
     case 'put':
-      app.get( urlPath, genHandler(fn, 'body' ) );
+      app.put( urlPath, genHandler(fn, 'body' ) );
       break;
     case 'delete':
-      app.get( urlPath, genHandler(fn, 'query' ) );
+      app.delete( urlPath, genHandler(fn, 'query' ) );
       break;
     case 'patch':
-      app.get( urlPath, genHandler(fn, 'body' ) );
+      app.patch( urlPath, genHandler(fn, 'body' ) );
       break;
   }
 }
