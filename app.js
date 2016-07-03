@@ -28,7 +28,7 @@ app.use(session({
 	secret: config.cookieSecret,
 	store: sessionStore,
 	resave: true,
-	saveUninitialized: true
+	saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,7 +42,7 @@ app.use(function(req, res, next) {
 
 app.use(function(err, req, res, next) {
   console.log( err );
-  res.apiError( err );
+  res.sendError( err );
   next && next();
 });
 

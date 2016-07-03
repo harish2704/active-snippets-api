@@ -5,7 +5,7 @@ var ModelDef = modelUtils.ModelDef;
 var Sequelize = require( 'sequelize' );
 var crypto = require('crypto');
 
-var Category = new ModelDef(
+var Model = new ModelDef(
   'User',
   {
     name: {
@@ -91,6 +91,6 @@ var Category = new ModelDef(
 );
 
 
-module.exports = modelUtils.extend( baseModelDef, Category );
+module.exports = modelUtils.extend( baseModelDef, Model );
 
 
