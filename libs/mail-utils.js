@@ -50,7 +50,7 @@ function sendMail( opts ){
 exports.sendRegistrationMail = function( user ){
 
   var emailData = {
-    link: config.SITE_ROOT + '/verify?emailToken=' + user.emailToken,
+    link: config.SITE_ROOT + '/auth/verify?emailToken=' + user.emailToken,
     user: user,
   };
   var emailTmpl = fs.readFileSync( config.appRoot + '/mail-templates/registration.html', 'utf-8' );

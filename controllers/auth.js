@@ -20,9 +20,9 @@ exports.postRegister = function( data ){
 
 
 exports.getVerify = function( data, req ){
-  var token = data.token;
+  var token = data.emailToken;
 
-  return User.findOne({where:{ token: token}})
+  return User.findOne({where:{ emailToken: token}})
     .then(function(user){
       assert( user, 'Invalid verification token' );
       user.emailToken = null;
@@ -35,7 +35,7 @@ exports.getVerify = function( data, req ){
     .then(function( user ){
       return{
         user: user,
-        sessionId: getSessionId( req.sessionId )
+        sessionId: getSessionId( req.sessionID )
       };
     });
 };
