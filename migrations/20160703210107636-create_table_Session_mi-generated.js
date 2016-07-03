@@ -5,20 +5,17 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface.createTable('Sessions', {
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement : true,
-        allowNull : false,
-        primaryKey : true,
-      },
-
       sid: {
         type: Sequelize.STRING,
-        allowNull : false,
+        primaryKey : true,
       },
 
       data: {
         type: Sequelize.TEXT,
+      },
+
+      expires: {
+        type: Sequelize.DATE,
       },
 
       createdAt: {
@@ -39,26 +36,6 @@ module.exports = {
         onUpdate : 'CASCADE',
       },
 
-    })
-    .then( function(){
-      return queryInterface.addIndex(
-        'Sessions',
-        ["sid"],
-        {
-          indexName: 'Sessions_sid_unique',
-          indicesType: 'UNIQUE'
-        }
-      );
-    })
-    .then( function(){
-      return queryInterface.addIndex(
-        'Sessions',
-        ["id"],
-        {
-          indexName: 'Sessions_id_unique',
-          indicesType: 'UNIQUE'
-        }
-      )
     });
   },
 

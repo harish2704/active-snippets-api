@@ -1,4 +1,3 @@
-var baseModelDef = require( './base-model' );
 var modelUtils = require( './utils' );
 var ModelDef = modelUtils.ModelDef;
 var Sequelize = require( 'sequelize' );
@@ -8,12 +7,12 @@ var Model = new ModelDef(
   {
     sid: {
       type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
+      primaryKey: true
     },
     data: {
       type: Sequelize.TEXT,
     },
+    expires: Sequelize.DATE
   },
   {
     getterMethods:{
@@ -22,7 +21,9 @@ var Model = new ModelDef(
     setterMethods:{
     },
     hooks:{
-
+      beforeCreate: function( user ){ user.updateUserId(); },
+      beforeSave: function( user ){ user.updateUserId(); },
+      beforeUpdate: function( user ){ user.updateUserId(); },
     },
     classMethods:{
       associate: function( models ) {
@@ -30,11 +31,21 @@ var Model = new ModelDef(
       },
     },
     instanceMethods:{
+      updateUserId: function(){
+        try{
+          var data = JSON.parse( this.data );
+          if( data && data.passport.user ){
+            this.UserId = data.passport.user;
+          }
+        }catch( err ){
+
+        }
+      }
     }
   }
 );
 
 
-module.exports = modelUtils.extend( baseModelDef, Model );
+module.exports = Model;
 
 

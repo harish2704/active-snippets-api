@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "env NODE_ENV=testing node test/**/**.spec.js",
+    "test": "export NODE_ENV=testing; npm run migrate; node test/**/**.spec.js",
     "start-doc-gui": "rest-api-doc-gui ./docs/Api.hjson",
     "gen-doc": "rest-api-doc-gen-static ./docs/Api.hjson ./docs/Api.html",
     "migrate": "sequelize --config ./config/database.json db:migrate",
@@ -21,11 +21,11 @@
   "dependencies": {
     "bluebird": "^3.4.1",
     "body-parser": "~1.15.1",
+    "connect-session-sequelize": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "ejs": "^2.4.2",
     "express": "^4.14.0",
-    "express-sequelize-session": "^0.4.0",
     "express-session": "^1.13.0",
     "generic-paginate": "0.0.4",
     "lodash": "^4.13.1",
