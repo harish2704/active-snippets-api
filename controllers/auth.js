@@ -4,6 +4,7 @@ var _ = require('lodash');
 var assert = require('assert');
 var Promise = require('bluebird');
 var getSessionId = require('libs/api-session').getSessionId;
+var crypto = require('crypto');
 
 exports.postRegister = function( data ){
   var userData = _.pick( data, 'name', 'email', 'password' );

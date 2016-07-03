@@ -28,9 +28,20 @@ function sendMailDev( opts ){
   return Promise.resolve();
 }
 
+function sendMailTest( opts ){
+  var globalMailBox = global._mailBox || {};
+  var userMailBox = globalMailBox[opts.to] || [];
+  userMailBox.push( opts );
+
+  globalMailBox[opts.to] = userMailBox;
+  global._mailBox = globalMailBox;
+}
+
 function sendMail( opts ){
   if( config.env == 'development' ){
     return sendMailDev( opts );
+  } else if( config.env == 'testing') {
+    return sendMailTest( opts );
   } else {
     return sendMailReal( opts );
   }

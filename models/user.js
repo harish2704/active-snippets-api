@@ -1,7 +1,9 @@
 var baseModelDef = require( './base-model' );
+var mailUtils = require('libs/mail-utils');
 var modelUtils = require( './utils' );
 var ModelDef = modelUtils.ModelDef;
 var Sequelize = require( 'sequelize' );
+var crypto = require('crypto');
 
 var Category = new ModelDef(
   'User',
@@ -57,12 +59,14 @@ var Category = new ModelDef(
     classMethods:{
       associate: function(  ) {
       },
+
       hashPassword: function( password ){
         var salt = crypto.randomBytes(8).toString('base64');
         var Hash = crypto.createHmac('sha512', salt );
         Hash.update( password );
         return salt + '$' + Hash.digest( 'base64' );
       },
+
       verifyPassword: function( hash, password ){
         hash = hash.split('$');
         var salt = hash[0];
@@ -70,12 +74,18 @@ var Category = new ModelDef(
         var Hash = crypto.createHmac('sha512', salt );
         Hash.update( password );
         return Hash.digest('base64') === digest;
-      }
+      },
+
+      sendRegistrationMail: function( user ){
+        mailUtils.sendRegistrationMail( user );
+      },
+
     },
     instanceMethods:{
       verifyPassword: function( password ){
         return this.Model.verifyPassword( this.password, password );
-      }
+      },
+
     }
   }
 );
