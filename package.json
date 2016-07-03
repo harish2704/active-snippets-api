@@ -1,0 +1,45 @@
+{
+  "name": "active-snippets-api",
+  "version": "0.0.1",
+  "description": "Active-Snippets API server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/www",
+    "start-doc-gui": "rest-api-doc-gui ./docs/Api.hjson",
+    "gen-doc": "rest-api-doc-gen-static ./docs/Api.hjson ./docs/Api.html",
+    "migrate": "sequelize --config ./config/database.json db:migrate",
+    "undo-migration": "sequelize --config ./config/database.json db:migrate:undo",
+    "migration-create": "sequelize --config ./config/database.json migration:create",
+    "create-migration": "sequelize --config ./config/database.json migration:create",
+    "create-seed": "sequelize --config ./config/database.json migration:create",
+    "run-seed": "sequelize --config ./config/database.json db:seed:all",
+    "gen-migration": "sequelize-migration-generator ./models ./migrations"
+  },
+  "author": "Harish.K <harish2704@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "body-parser": "~1.15.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "ejs": "^2.4.2",
+    "express": "^4.14.0",
+    "express-sequelize-session": "^0.4.0",
+    "express-session": "^1.13.0",
+    "generic-paginate": "0.0.4",
+    "lodash": "^4.13.1",
+    "morgan": "^1.7.0",
+    "nodemailer": "^2.4.2",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^3.23.2"
+  },
+  "devDependencies": {
+    "rest-api-doc-gen-static": "github:harish2704/rest-api-doc-gen-static",
+    "rest-api-doc-gui": "github:harish2704/rest-api-doc-gui",
+    "sequelize-cli": "^2.4.0",
+    "sequelize-migration-generator": "github:harish2704/sequelize-migration-generator#d9a1ccd58ef448de75966abef344fffa2ce8cf2f"
+  }
+}
