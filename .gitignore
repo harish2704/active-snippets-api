@@ -4,3 +4,4 @@ config/env/*.json
 !config/env/*sample.json
 config/database.json
 temp/
+*.sqlite
