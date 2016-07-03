@@ -7,7 +7,7 @@ var controllers = {
 
 function genHandler( fn, dataKey ){
   return function( req, res, next ){
-    return fn( req[dataKey], req )
+    return fn( req[dataKey], req, res )
       .then(function( data ){
         res.sendSuccess(data);
       })

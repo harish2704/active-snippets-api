@@ -5,6 +5,8 @@ var assert = require('assert');
 var Promise = require('bluebird');
 var getSessionId = require('libs/api-session').getSessionId;
 var crypto = require('crypto');
+var isLoggedIn = require('libs/auth').isLoggedIn;
+var _t = require( 'libs/api-utils').transormMiddlewares;
 
 exports.postRegister = function( data ){
   var userData = _.pick( data, 'name', 'email', 'password' );
@@ -41,3 +43,9 @@ exports.getVerify = function( data, req ){
 };
 
 
+exports.getProfile = _t([
+  isLoggedIn,
+  function( data, req ){
+    return Promise.resolve( req.user );
+  }
+]);

@@ -52,3 +52,22 @@ exports.monkeyPatch = function( app ){
 exports.reject = function( message, status ){
   return Promise.reject( new ApiError( message, status ));
 }
+
+
+
+exports.transormMiddlewares = function( arr ){
+  arr = arr.slice();
+  var fn = arr.pop();
+
+  return function(data, req, res ){
+    return Promise.mapSeries( arr, function( mware ){
+      return Promise.fromCallback(function(done){
+        mware(req, res, done );
+      });
+    })
+    .then(function(){
+      return fn(data, req, res);
+    })
+  }
+
+}
