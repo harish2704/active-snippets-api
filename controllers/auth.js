@@ -55,10 +55,10 @@ exports.getProfile = _t([
 exports.getLogout = function(data, req){
   req.logOut();
   return Promise.resolve({});
-}
+};
+
 
 exports.postLogin = function(data, req ){
-
   return User.findOne({where:{ username: data.username}})
     .tap(function(user){
       assert( user, 'Invalid username' );
@@ -71,7 +71,7 @@ exports.postLogin = function(data, req ){
         sessionId: getSessionId( req.sessionID )
       };
     });
-}
+};
 
 
 
