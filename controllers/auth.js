@@ -72,3 +72,14 @@ exports.postLogin = function(data, req ){
       };
     });
 }
+
+
+
+exports.patchProfile = function(data, req ){
+  var data = _.pick( data, 'name' );
+  var user = req.user;
+  _.extend( user, data );
+  return user.save();
+};
+
+
