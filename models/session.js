@@ -34,8 +34,8 @@ var Model = new ModelDef(
       updateUserId: function(){
         try{
           var data = JSON.parse( this.data );
-          if( data && data.passport.user ){
-            this.UserId = data.passport.user;
+          if( data && data.passport ){
+            this.UserId = data.passport.user||null;
           }
         }catch( err ){
 

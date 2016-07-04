@@ -49,3 +49,26 @@ exports.getProfile = _t([
     return Promise.resolve( req.user );
   }
 ]);
+
+
+
+exports.getLogout = function(data, req){
+  req.logOut();
+  return Promise.resolve({});
+}
+
+exports.postLogin = function(data, req ){
+
+  return User.findOne({where:{ username: data.username}})
+    .tap(function(user){
+      assert( user, 'Invalid username' );
+      assert( user.verifyPassword(data.password), 'Invalid password' );
+      return Promise.fromCallback(function(cb){ req.logIn(user, cb) } );
+    })
+    .then(function( user ){
+      return{
+        user: user,
+        sessionId: getSessionId( req.sessionID )
+      };
+    });
+}
