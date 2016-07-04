@@ -63,6 +63,17 @@ var Model = new ModelDef(
     classMethods:{
       associate: function( models ) {
         this.belongsTo( models.User );
+
+        this.addScope( 'index', {
+          subQuery: false,
+          include:[
+            {
+              model: models.User,
+              attributes: [ 'id', 'name', 'username' ],
+            },
+          ]
+        });
+
       },
     },
     instanceMethods:{ }

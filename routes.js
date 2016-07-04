@@ -2,6 +2,7 @@
 var controllers = {
   auth: require( 'controllers/auth'),
   users: require( 'controllers/users'),
+  snippets: require( 'controllers/snippets'),
 };
 
 
