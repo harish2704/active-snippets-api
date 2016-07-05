@@ -25,6 +25,7 @@ function genHandler( fn, dataKey ){
       .catch(next);
   }
 }
+
 function parseFnName( actionName, controllerName ){
   var action = actionName.match( actionNameRegex );
   var method = action[1];
@@ -41,20 +42,14 @@ function mountAction( app, controllerName, actionName, controller ){
   var action = parseFnName( actionName, controllerName );
 
   switch( action.method ){
-    case 'get':
-      app.get( action.url, genHandler(fn, 'query' ) );
-      break;
     case 'post':
+    case 'put':
+    case 'patch':
       app.post( action.url, genHandler(fn, 'body' ) );
       break;
-    case 'put':
-      app.put( action.url, genHandler(fn, 'body' ) );
-      break;
+    case 'get':
     case 'delete':
       app.delete( action.url, genHandler(fn, 'query' ) );
-      break;
-    case 'patch':
-      app.patch( action.url, genHandler(fn, 'body' ) );
       break;
   }
 }
