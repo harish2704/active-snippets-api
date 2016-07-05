@@ -2,8 +2,10 @@ var _ = require('lodash');
 var models = require('models');
 var Snippet = models.Snippet;
 var paginator = require('libs/paginator');
+var isLoggedIn = require('libs/auth').isLoggedIn;
+var _t = require( 'libs/api-utils').transormMiddlewares;
 
-exports.get = function( data ){
+exports.list = function( data ){
 
   var page = parseInt( data.page ) || 1;
   var limit = 20;
@@ -24,4 +26,9 @@ exports.get = function( data ){
 };
 
 
-
+exports.create = _t( [
+  isLoggedIn,
+  function( data ){
+    return Snippet.create( data );
+  }
+] );

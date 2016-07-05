@@ -6,6 +6,17 @@ var controllers = {
 };
 
 
+var methodAliases = {
+  list: 'get',
+  create: 'post',
+  update: 'put',
+};
+[ 'get', 'post', 'put', 'delete', 'patch'].forEach(function(v){ methodAliases[v] = v; });
+
+
+/* /(list|create|update|get|post|put|delete|patch)(.*)/ */
+var actionNameRegex =  new RegExp('(' + Object.keys( methodAliases ).join('|') + ')(.*)' );
+
 function genHandler( fn, dataKey ){
   return function( req, res, next ){
     return fn( req[dataKey], req, res )
@@ -15,30 +26,36 @@ function genHandler( fn, dataKey ){
       .catch(next);
   }
 }
+function parseFnName( actionName, controllerName ){
+  var action = actionName.match( actionNameRegex );
+  var method = action[1];
+  var urlPath = '/' + controllerName +'/'+ action[2].toLowerCase();
+  return {
+    method: methodAliases[method] || method ,
+    url: urlPath,
+    name: actionName,
+  }
+}
 
 function mountAction( app, controllerName, actionName, controller ){
   var fn = controller[actionName];
-  var method, urlPath;
+  var action = parseFnName( actionName, controllerName );
 
-  actionName = actionName.match( /(get|post|put|delete|patch)(.*)/ );
-  method = actionName[1];
-  urlPath = '/' + controllerName +'/'+ actionName[2].toLowerCase();
-
-  switch( method ){
+  switch( action.method ){
     case 'get':
-      app.get( urlPath, genHandler(fn, 'query' ) );
+      app.get( action.url, genHandler(fn, 'query' ) );
       break;
     case 'post':
-      app.post( urlPath, genHandler(fn, 'body' ) );
+      app.post( action.url, genHandler(fn, 'body' ) );
       break;
     case 'put':
-      app.put( urlPath, genHandler(fn, 'body' ) );
+      app.put( action.url, genHandler(fn, 'body' ) );
       break;
     case 'delete':
-      app.delete( urlPath, genHandler(fn, 'query' ) );
+      app.delete( action.url, genHandler(fn, 'query' ) );
       break;
     case 'patch':
-      app.patch( urlPath, genHandler(fn, 'body' ) );
+      app.patch( action.url, genHandler(fn, 'body' ) );
       break;
   }
 }
