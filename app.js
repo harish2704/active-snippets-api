@@ -19,6 +19,13 @@ var app = express();
 require('libs/passport');
 
 apiUtils.monkeyPatch( app );
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-sessionid, Authorization, Content-Type');
+  if( req.method === 'OPTIONS' ){ return res.sendStatus(200); }
+  next();
+})
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: '1mb'} ));
 app.use( apiSession.handleSessionId );
@@ -43,7 +50,6 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   console.log( err );
   res.sendError( err );
-  next && next();
 });
 
 
