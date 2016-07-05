@@ -36,9 +36,9 @@ exports.monkeyPatch = function( app ){
 
 
 
-  app.response.sendError = function( err ){
+  app.response.sendError = function( err, status ){
     err = ApiError.create( err )
-    this.status( err.status || 400 );
+    this.status( err.status || status || 400 );
     this.json({
       success: false,
       message: err.message,
