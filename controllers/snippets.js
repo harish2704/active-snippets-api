@@ -4,6 +4,7 @@ var Snippet = models.Snippet;
 var paginator = require('libs/paginator');
 var isLoggedIn = require('libs/auth').isLoggedIn;
 var _t = require( 'libs/api-utils').transormMiddlewares;
+var assert = require('assert');
 
 exports.list = function( data ){
 
@@ -30,5 +31,19 @@ exports.create = _t( [
   isLoggedIn,
   function( data ){
     return Snippet.create( data );
+  }
+] );
+
+exports.update = _t( [
+  isLoggedIn,
+  function( data, req ){
+    assert( data.id, 'invalid id' );
+    data = _.pick( data, 'template', 'scheme' );
+    return Snippet.findById( data.id )
+      .then(function(snippet){
+        assert( snippet.UserId === req.user.id, 'Access denied' );
+        _.extend( snippet, data );
+        return snippet.save();
+      })
   }
 ] );
