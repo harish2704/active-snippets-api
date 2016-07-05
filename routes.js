@@ -13,7 +13,6 @@ var methodAliases = {
 };
 [ 'get', 'post', 'put', 'delete', 'patch'].forEach(function(v){ methodAliases[v] = v; });
 
-
 /* /(list|create|update|get|post|put|delete|patch)(.*)/ */
 var actionNameRegex =  new RegExp('(' + Object.keys( methodAliases ).join('|') + ')(.*)' );
 
@@ -31,7 +30,7 @@ function parseFnName( actionName, controllerName ){
   var method = action[1];
   var urlPath = '/' + controllerName +'/'+ action[2].toLowerCase();
   return {
-    method: methodAliases[method] || method ,
+    method: methodAliases[method],
     url: urlPath,
     name: actionName,
   }
